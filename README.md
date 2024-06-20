@@ -18,8 +18,8 @@ Esta é uma aplicação Laravel configurada para rodar em contêineres Docker. A
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/FernandaNascimento26/ChalengeBackendPHP.git
+   cd sChalengeBackendPHP
    ```
 
 2. **Configure as variáveis de ambiente:**

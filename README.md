@@ -1,3 +1,4 @@
+
 ### README
 
 # Aplicação Laravel, React e Docker
@@ -112,4 +113,3 @@ Esta é uma aplicação Laravel configurada para rodar em contêineres Docker. A
 
 7. **Mensagens de Erro Personalizadas**:
    - Adicionadas mensagens de erro personalizadas e mais amigáveis, especialmente durante o login e o registro (email ja cadastrado, senha incorreta, senha curta e etc.), para melhorar a usabilidade e fornecer feedback mais claro ao usuário.
-

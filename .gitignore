@@ -1,3 +1,4 @@
+
 # Laravel specific
 /vendor
 /node_modules
@@ -23,3 +24,4 @@ Thumbs.db
 .idea
 *.sublime-project
 *.sublime-workspace
+

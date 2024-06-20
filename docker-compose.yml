@@ -1,55 +1,51 @@
-version: '3.8'
-
+version: '3.7'
 services:
   app:
-    image: laravel-app
-    container_name: laravel-app
-    restart: unless-stopped
     build:
       context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    restart: unless-stopped
+    working_dir: /var/www
     volumes:
       - .:/var/www
+      - ./docker/app/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
     depends_on:
-      - db
+      - mysql
     environment:
-      DB_HOST: mysql-database
-      DB_DATABASE: laravel
-      DB_USERNAME: laraveluser
-      DB_PASSWORD: Secret123!
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=0
+      - PHP_OPCACHE_REVALIDATE_FREQ=0
 
-  db:
-    image: mysql:5.7
-    container_name: mysql-database
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laraveluser
-      MYSQL_PASSWORD: Secret123!
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - dbdata:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    networks:
-      - app-network
-
-  webserver:
-    image: nginx:alpine
+  nginx:
+    image: nginx:latest
     container_name: nginx-webserver
     restart: unless-stopped
     ports:
       - "8000:80"
     volumes:
       - .:/var/www
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-database
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - "3306:3306"
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  dbdata:

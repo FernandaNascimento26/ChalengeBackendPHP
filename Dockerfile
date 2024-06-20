@@ -1,5 +1,5 @@
-# Imagem oficial do PHP 
-FROM php:8.1-fpm
+#Imagem oficial do PHP como imagem base
+FROM php:8.1.5-fpm
 
 # Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
@@ -29,6 +29,7 @@ COPY . .
 
 # Instala as dependências da aplicação
 RUN composer install
+RUN npm install
 
 # Define as permissões corretas
 RUN chown -R www-data:www-data /var/www \

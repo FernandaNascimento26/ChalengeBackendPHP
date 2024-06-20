@@ -1,7 +1,6 @@
-#Imagem oficial do PHP como imagem base
 FROM php:8.1.5-fpm
 
-# Instala dependências do sistema
+# Instalando dependências necessárias
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -10,31 +9,30 @@ RUN apt-get update && apt-get install -y \
     locales \
     zip \
     jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl
+    vim unzip git curl \
+    nodejs npm
 
-# Instala extensões PHP necessárias
+# Instalando extensões PHP necessárias
 RUN docker-php-ext-install pdo_mysql exif pcntl bcmath gd
 
-# Instala Composer
+# Instalando Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Define o diretório de trabalho
+# Setando o diretório de trabalho
 WORKDIR /var/www
 
-# Copia os arquivos da aplicação para o diretório de trabalho
+# Copiando arquivos da aplicação
 COPY . .
 
-# Instala as dependências da aplicação
+# Instalando dependências do Composer
 RUN composer install
+
+# Instalando dependências do npm
 RUN npm install
 
-# Define as permissões corretas
+# Ajustando permissões
 RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Expõe a porta 9000 e define o comando de inicialização
 EXPOSE 9000
 CMD ["php-fpm"]

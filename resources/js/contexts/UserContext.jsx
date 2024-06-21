@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,11 +15,19 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
+    // Obter o token CSRF da meta tag
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     const response = await fetch('http://localhost:8000/api/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': token // Adicionar o token CSRF nos cabeçalhos
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
     });
+
     const data = await response.json();
     if (response.ok) {
       localStorage.setItem('user', JSON.stringify(data.user));

@@ -19,10 +19,14 @@ const Register = () => {
     console.log('User Type selected:', userType); 
 
     try {
+      
+      const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      
       const response = await fetch('http://localhost:8000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': token 
         },
         body: JSON.stringify({ name, email, password, user_type: userType }),
         credentials: 'include', 
@@ -44,7 +48,7 @@ const Register = () => {
   return (
     <div className="container">
       <form onSubmit={handleRegister}>
-        <h2>Register</h2>
+        <h2>Cadastro</h2>
         {message && <p className="text-success">{message}</p>}
         {error && <p className="text-danger">{JSON.stringify(error)}</p>}
         <div className="mb-3">

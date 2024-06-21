@@ -41,6 +41,75 @@ Esta é uma aplicação Laravel configurada para rodar em contêineres Docker. A
 5. **Acesse a aplicação:**
    Abra o navegador e acesse `http://localhost:8000`.
 
+### Como Rodar Localmente
+
+Para rodar o projeto localmente sem Docker, siga os passos abaixo:
+
+### Dependências
+
+- PHP >= 7.4
+- Composer
+- Node.js e NPM
+- MySQL
+
+### Passos para Configuração Local
+
+1. **Clone o Repositório**
+   ```sh
+   git clone https://github.com/FernandaNascimento26/ChalengeBackendPHP.git
+   cd ChalengeBackendPHP
+   ```
+
+2. **Instale as Dependências PHP**
+   ```sh
+   composer install
+   ```
+
+3. **Instale as Dependências JavaScript**
+   ```sh
+   npm install
+   ```
+
+4. **Configure o Banco de Dados**
+   - Crie um banco de dados MySQL.
+   - Copie o arquivo `.env.example` para `.env` e configure as credenciais do banco de dados.
+     ```sh
+     cp .env.example .env
+     ```
+   - Edite o arquivo `.env` e configure os seguintes parâmetros:
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=nome_do_seu_banco_de_dados
+     DB_USERNAME=seu_usuario
+     DB_PASSWORD=sua_senha
+     ```
+
+5. **Gere a Chave da Aplicação**
+   ```sh
+   php artisan key:generate
+   ```
+
+6. **Execute as Migrações do Banco de Dados**
+   ```sh
+   php artisan migrate
+   php artisan db:seed
+   ```
+
+7. **Compile os Assets**
+   ```sh
+   npm run dev
+   ```
+
+8. **Inicie o Servidor**
+   ```sh
+   php artisan serve
+   ```
+
+9. **Acesse a Aplicação:**
+   Abra o navegador e acesse `http://localhost:8000`.
+
 ## Páginas da Aplicação
 
 - **Home**: Página inicial acessível por todos os usuários.
@@ -77,7 +146,6 @@ Esta é uma aplicação Laravel configurada para rodar em contêineres Docker. A
 - Navegue para outras páginas usando o menu.
 - Tente acessar as páginas AdminPage e ManagerPage para verificar as regras de acesso.
 
-
 ### Teste de Funcionalidades Gerais
 
 1. Faça login como usuário comum.
@@ -112,4 +180,5 @@ Esta é uma aplicação Laravel configurada para rodar em contêineres Docker. A
    - Adicionado um menu dinâmico que mostra ou esconde opções de acordo com o tipo de usuário logado, melhorando a navegação e a experiência do usuário.
 
 7. **Mensagens de Erro Personalizadas**:
-   - Adicionadas mensagens de erro personalizadas e mais amigáveis, especialmente durante o login e o registro (email ja cadastrado, senha incorreta, senha curta e etc.), para melhorar a usabilidade e fornecer feedback mais claro ao usuário.
+   - Adicionadas mensagens de erro personalizadas e mais amigáveis, especialmente durante o login e o registro (email já cadastrado, senha incorreta, senha curta e etc.), para melhorar a usabilidade e fornecer feedback mais claro ao usuário.
+

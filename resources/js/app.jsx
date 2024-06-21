@@ -41,6 +41,8 @@ function App() {
   );
 }
 
+console.log('Vite is working!');
+
 export default App;
 
 ReactDOM.render(<App />, document.getElementById('app'));

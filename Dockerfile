@@ -1,10 +1,6 @@
-# Use an official PHP runtime as a parent image
 FROM php:8.1.5-fpm
 
-# Set working directory
-WORKDIR /var/www
-
-# Install system dependencies
+# Instalar dependências
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -13,36 +9,30 @@ RUN apt-get update && apt-get install -y \
     locales \
     zip \
     jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl \
-    nodejs \
-    npm
+    vim unzip git curl \
+    && docker-php-ext-install pdo_mysql exif pcntl bcmath gd
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql exif pcntl bcmath gd
+# Instalar Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
-# Install Composer
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy existing application directory contents
-COPY . /var/www
+# Configurar diretório de trabalho
+WORKDIR /var/www
 
-# Set permissions
+# Copiar arquivos da aplicação
+COPY . .
+
+# Instalar dependências do PHP e Node.js
+RUN composer install && npm install && npm run build
+
+# Ajustar permissões
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-    && apt-get install -y nodejs
-
-# Install npm dependencies
-RUN npm install
-
-# Install Composer dependencies
-RUN composer install
-
-# Expose port 9000 and start php-fpm server
+# Expor porta
 EXPOSE 9000
+
 CMD ["php-fpm"]
